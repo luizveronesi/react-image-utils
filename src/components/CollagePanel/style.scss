@@ -1,0 +1,90 @@
+.collate-container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+  width: 100%;
+
+  .image-wrapper {
+    width: 100%;
+    height: 100vh;
+
+    .react-draggable {
+      /* this is fundamental to image resizing */
+      > img {
+        width: inherit;
+
+        &:hover {
+          border: var(--border-default);
+        }
+      }
+    }
+  }
+
+  .toolbox {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    padding: 24px;
+    text-align: center;
+    border-left: var(--border-default);
+    overflow-y: auto;
+
+    > h5 {
+      margin-bottom: 32px;
+    }
+
+    > button {
+      width: 100%;
+      margin-top: 24px;
+
+      &.active {
+        background-color: var(--color-disabled);
+      }
+    }
+
+    .gallery {
+      position: relative;
+      margin-bottom: 16px;
+
+      > img {
+        width: 64px;
+      }
+
+      > button {
+        position: absolute;
+        border: none;
+        right: 0;
+      }
+    }
+
+    .dropzone-container {
+      margin: 0px;
+
+      .dropzone {
+        font-size: var(--font-size-body);
+        width: 64px;
+        padding: 8px;
+      }
+    }
+  }
+}
+
+.popover-text {
+  width: 20vw;
+  max-width: 20vw;
+
+  .popover-body {
+    width: 100%;
+
+    > textarea {
+      width: 100%;
+      padding: 8px;
+    }
+
+    .buttons {
+      text-align: center;
+      margin-top: 24px;
+    }
+  }
+}

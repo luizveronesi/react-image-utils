@@ -1,0 +1,42 @@
+.color-picker-container {
+  display: flex;
+  flex-direction: column;
+
+  .swatch {
+    width: 100%;
+    height: 40px;
+    border-radius: 8px;
+    border: 3px solid #fff;
+    box-shadow: 0 0 0 1px rgba(0, 0, 0, 0.1), inset 0 0 0 1px rgba(0, 0, 0, 0.1);
+    cursor: pointer;
+    margin-top: 24px;
+  }
+}
+
+.popover-color {
+  .react-colorful {
+    margin-bottom: 8px;
+    width: 100%;
+  }
+
+  .picker {
+    display: flex;
+    flex-direction: column;
+
+    .input-color {
+      margin-top: 8px;
+      height: 48px;
+      font-size: var(--font-size-medium);
+    }
+
+    .buttons {
+      display: flex;
+      justify-content: center;
+      margin-top: 16px;
+
+      .btn:first-of-type {
+        margin-right: 8px;
+      }
+    }
+  }
+}

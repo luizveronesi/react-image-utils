@@ -1,0 +1,54 @@
+.design-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  width: 100%;
+  background-color: var(--color-surface);
+
+  .design-image {
+    stroke-width: 5px;
+    stroke: var(--color-dark);
+    fill: none;
+  }
+
+  .toolbox {
+    height: 100%;
+    padding: 24px;
+    text-align: center;
+    border-left: var(--border-default);
+
+    > h5 {
+      margin-bottom: 32px;
+    }
+
+    > button {
+      width: 40px;
+      height: 40px;
+      border: 2px dashed var(--color-disabled);
+      margin-bottom: 32px;
+
+      &.active {
+        background-color: var(--color-disabled);
+      }
+    }
+
+    .design-circle {
+      border-radius: 50%;
+    }
+  }
+
+  img,
+  svg {
+    vertical-align: top;
+  }
+
+  .box {
+    fill: var(--color-primary);
+    fill-opacity: 0.3;
+    width: auto;
+    height: auto;
+    position: absolute;
+    cursor: pointer;
+  }
+}

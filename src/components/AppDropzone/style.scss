@@ -1,0 +1,18 @@
+.dropzone-container {
+  border: 1px dashed var(--color-primary);
+  border-radius: var(--border-radius-button);
+
+  .dropzone {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 64px;
+    font-size: var(--font-size-subtitle);
+    cursor: pointer;
+  }
+
+  .preview {
+    width: 400px;
+    height: 400px;
+  }
+}
