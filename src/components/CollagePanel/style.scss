@@ -13,10 +13,10 @@
       /* this is fundamental to image resizing */
       > img {
         width: inherit;
+      }
 
-        &:hover {
-          border: var(--border-default);
-        }
+      &:hover {
+        border: var(--border-default);
       }
     }
   }
