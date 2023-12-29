@@ -53,6 +53,7 @@ export default function CollagePanel() {
   };
 
   const handleUpload = (thisUpload: UploadedImage) => {
+    thisUpload.zIndex = uploaded.length;
     setUploaded((prevState) => [...prevState, thisUpload]);
   };
 
@@ -65,10 +66,20 @@ export default function CollagePanel() {
     exportComponentAsJPEG(downloadTarget, { fileName: downloadFilename });
   };
 
+  // on the double click send the image to the background
   const handleClickImage = (e: any, idx: number) => {
-    // on the double click
     if (e.detail !== 2) return;
-    console.log(idx);
+
+    let firstZidx = 0;
+    uploaded.forEach((u, i) => {
+      if (i === idx) {
+        u.zIndex = 0;
+      } else {
+        firstZidx += 1;
+        u.zIndex = firstZidx;
+      }
+    });
+    setUploaded([...uploaded]);
   };
 
   return (

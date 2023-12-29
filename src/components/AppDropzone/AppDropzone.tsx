@@ -19,7 +19,6 @@ function AppDropzone({ setUploaded, children }: Props) {
         url: data,
         width: img.width,
         height: img.height,
-        zIndex: 0,
       });
     };
   };

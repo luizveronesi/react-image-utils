@@ -3,5 +3,5 @@ export interface UploadedImage {
   file: File | null;
   width?: number;
   height?: number;
-  zIndex: 0;
+  zIndex?: number;
 }
