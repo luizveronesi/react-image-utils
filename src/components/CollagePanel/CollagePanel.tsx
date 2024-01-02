@@ -1,55 +1,34 @@
 import {
   faDownload,
-  faFont,
   faTrash,
   faUpload,
 } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { MutableRefObject, useRef, useState } from 'react';
-import { Button, Form, InputGroup, Overlay, Popover } from 'react-bootstrap';
+import { Button } from 'react-bootstrap';
 import { exportComponentAsJPEG } from 'react-component-export-image';
 import { Rnd } from 'react-rnd';
+import AppColorpicker from '../AppColorpicker';
 import AppDropzone from '../AppDropzone';
 import { UploadedImage } from '../AppDropzone/UploadedImage';
-import Text, { EMPTY_TEXT } from './Text';
+import CollageText from '../CollageText';
+import Text from '../CollageText/Text';
 import './style.scss';
-import AppColorpicker from '../AppColorpicker';
-
-const fontFamilies: Record<string, string> = {
-  Arial: 'Arial, sans-serif',
-  'Arial Black': 'Arial Black, sans-serif',
-  'Book Antiqua': 'Book Antiqua, serif',
-  'Century Gothic': 'Century Gothic, sans-serif',
-  'Courier New': 'Courier New, monospace',
-  Garamond: 'Garamond, serif',
-  Georgia: 'Georgia, serif',
-  Helvetica: 'Helvetica, sans-serif',
-  Impact: 'Impact, sans-serif',
-  'Lucida Console': 'Lucida Console, monospace',
-  Palatino: 'Palatino, serif',
-  Tahoma: 'Tahoma, sans-serif',
-  'Trebuchet MS': 'Trebuchet MS, sans-serif',
-  'Times New Roman': 'Times New Roman, serif',
-  Verdana: 'Verdana, sans-serif',
-};
 
 const downloadFilename = 'react-image-utils.jpg';
 
 export default function CollagePanel() {
   const downloadTarget = useRef() as MutableRefObject<HTMLDivElement>;
-  const addTextTarget = useRef() as MutableRefObject<HTMLButtonElement>;
-  const [text, setText] = useState<Text>();
   const [backgroundColor, setBackgroundColor] = useState('#FFFFFF');
   const [uploaded, setUploaded] = useState<UploadedImage[]>([]);
   const [texts, setTexts] = useState<Text[]>([]);
 
-  const changeBackground = (color: string) => {
-    setBackgroundColor(color);
+  const handleAddText = (text: Text) => {
+    setTexts((prevState) => [...prevState, text]);
   };
 
-  const handleAddText = () => {
-    text && setTexts((prevState) => [...prevState, text]);
-    setText(undefined);
+  const changeBackground = (color: string) => {
+    setBackgroundColor(color);
   };
 
   const handleUpload = (thisUpload: UploadedImage) => {
@@ -104,7 +83,7 @@ export default function CollagePanel() {
             ))}
             {texts.map((text, idx) => (
               <Rnd
-                style={{ zIndex: idx }}
+                style={{ zIndex: idx, color: text.color }}
                 onClick={handleClickImage}
                 key={`text_${idx.valueOf()}`}
               >
@@ -132,14 +111,7 @@ export default function CollagePanel() {
               <FontAwesomeIcon icon={faUpload} />
             </AppDropzone>
 
-            <Button
-              variant="success"
-              onClick={() => setText(EMPTY_TEXT)}
-              ref={addTextTarget}
-              title="add text"
-            >
-              <FontAwesomeIcon icon={faFont} />
-            </Button>
+            <CollageText onCreate={handleAddText} />
 
             <AppColorpicker onChange={changeBackground} />
 
@@ -148,55 +120,6 @@ export default function CollagePanel() {
             </Button>
           </div>
         </>
-      )}
-
-      {text && (
-        <Overlay placement="left" target={addTextTarget.current} show>
-          <Popover className="popover-text">
-            <Popover.Header className="text-center">Add text</Popover.Header>
-
-            <Popover.Body>
-              <textarea
-                rows={5}
-                value={text?.value}
-                placeholder="Add your text"
-                onChange={(e) => setText({ ...text, value: e.target.value })}
-              />
-              <InputGroup className="mt-3">
-                <Form.Control
-                  placeholder="Font size (number)"
-                  value={text?.size}
-                  onChange={(e) => setText({ ...text, size: e.target.value })}
-                />
-              </InputGroup>
-              <Form.Select
-                value={text?.font}
-                onChange={(e) => setText({ ...text, font: e.target.value })}
-                className="mt-3"
-              >
-                <option>Choose a font family</option>
-                {Object.keys(fontFamilies).map((key) => (
-                  <option value={fontFamilies[key]} key={key}>
-                    {key}
-                  </option>
-                ))}
-              </Form.Select>
-
-              <div className="buttons">
-                <Button
-                  variant="danger"
-                  className="me-3"
-                  onClick={() => setText(undefined)}
-                >
-                  cancel
-                </Button>
-                <Button variant="success" onClick={handleAddText}>
-                  confirm
-                </Button>
-              </div>
-            </Popover.Body>
-          </Popover>
-        </Overlay>
       )}
     </div>
   );

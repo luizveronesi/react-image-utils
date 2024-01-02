@@ -3,7 +3,7 @@ import { Button, Overlay, Popover } from 'react-bootstrap';
 import { HexColorInput, HexColorPicker } from 'react-colorful';
 import './style.scss';
 
-const defaultColor = '#FFFFFF';
+export const defaultColor = '#000000';
 
 type AppColorpickerProps = {
   onChange: (value: string) => void;

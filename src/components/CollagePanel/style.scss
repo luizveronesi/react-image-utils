@@ -69,22 +69,3 @@
     }
   }
 }
-
-.popover-text {
-  width: 20vw;
-  max-width: 20vw;
-
-  .popover-body {
-    width: 100%;
-
-    > textarea {
-      width: 100%;
-      padding: 8px;
-    }
-
-    .buttons {
-      text-align: center;
-      margin-top: 24px;
-    }
-  }
-}
