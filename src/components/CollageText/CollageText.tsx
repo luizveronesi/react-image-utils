@@ -1,9 +1,9 @@
-import { faFont } from '@fortawesome/free-solid-svg-icons';
+import { faCheck, faTimes, faTrash } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { MutableRefObject, useRef, useState } from 'react';
-import { Button, Form, InputGroup, Overlay, Popover } from 'react-bootstrap';
+import { useState } from 'react';
+import { Button, Form, InputGroup } from 'react-bootstrap';
 import { HexColorPicker } from 'react-colorful';
-import Text, { EMPTY_TEXT } from './Text';
+import Text from './Text';
 import './style.scss';
 
 const fontFamilies: Record<string, string> = {
@@ -25,80 +25,80 @@ const fontFamilies: Record<string, string> = {
 };
 
 type Props = {
-  onCreate: (t: Text) => void;
+  text: Text;
+  onChange: (t: Text) => void;
+  onRemove: (t: Text) => void;
+  onClose: () => void;
 };
 
-export default function CollageText({ onCreate }: Props) {
-  const addTextTarget = useRef() as MutableRefObject<HTMLButtonElement>;
-  const [text, setText] = useState<Text>(EMPTY_TEXT);
-  const [openText, setOpenText] = useState(false);
+export default function CollageText({
+  text,
+  onChange,
+  onClose,
+  onRemove,
+}: Props) {
+  const [localText, setLocalText] = useState<Text>(text);
 
   return (
-    <>
-      <Button
-        variant="success"
-        onClick={() => setOpenText(!openText)}
-        ref={addTextTarget}
-        title="add text"
+    <div className="collage-text-container">
+      <textarea
+        rows={5}
+        value={localText?.value}
+        placeholder="Add your text"
+        onChange={(e) => setLocalText({ ...localText, value: e.target.value })}
+      />
+      <InputGroup className="mt-3">
+        <Form.Control
+          placeholder="Font size (number)"
+          value={localText?.size}
+          onChange={(e) => setLocalText({ ...localText, size: e.target.value })}
+        />
+      </InputGroup>
+      <Form.Select
+        value={localText?.font}
+        onChange={(e) => setLocalText({ ...localText, font: e.target.value })}
+        className="mt-3"
       >
-        <FontAwesomeIcon icon={faFont} />
-      </Button>
-      <Overlay placement="left" target={addTextTarget.current} show={openText}>
-        <Popover className="popover-text">
-          <Popover.Header className="text-center">Add text</Popover.Header>
-          <Popover.Body>
-            <textarea
-              rows={5}
-              value={text?.value}
-              placeholder="Add your text"
-              onChange={(e) => setText({ ...text, value: e.target.value })}
-            />
-            <InputGroup className="mt-3">
-              <Form.Control
-                placeholder="Font size (number)"
-                value={text?.size}
-                onChange={(e) => setText({ ...text, size: e.target.value })}
-              />
-            </InputGroup>
-            <Form.Select
-              value={text?.font}
-              onChange={(e) => setText({ ...text, font: e.target.value })}
-              className="mt-3"
-            >
-              <option>Choose a font family</option>
-              {Object.keys(fontFamilies).map((key) => (
-                <option value={fontFamilies[key]} key={key}>
-                  {key}
-                </option>
-              ))}
-            </Form.Select>
+        <option>Choose a font family</option>
+        {Object.keys(fontFamilies).map((key) => (
+          <option value={fontFamilies[key]} key={key}>
+            {key}
+          </option>
+        ))}
+      </Form.Select>
 
-            <HexColorPicker
-              color={text.color}
-              onChange={(thisColor) => setText({ ...text, color: thisColor })}
-            />
+      <HexColorPicker
+        color={localText.color}
+        onChange={(thisColor) =>
+          setLocalText({ ...localText, color: thisColor })
+        }
+      />
 
-            <div className="buttons">
-              <Button
-                variant="danger"
-                className="me-3"
-                onClick={() => setOpenText(false)}
-              >
-                cancel
-              </Button>
-              <Button
-                variant="success"
-                onClick={() => {
-                  setOpenText(false);
-                  onCreate(text);
-                }}
-              >
-                confirm
-              </Button>
-            </div>
-          </Popover.Body>
-        </Popover>
-      </Overlay>
-    </>
+      <div className="buttons">
+        {text.uid && (
+          <Button
+            variant="danger"
+            onClick={() => onRemove(text)}
+            className="me-3"
+          >
+            <FontAwesomeIcon icon={faTrash} />
+            <span className="ms-2">remove</span>
+          </Button>
+        )}
+        <Button variant="primary" onClick={onClose} className="me-3">
+          <FontAwesomeIcon icon={faTimes} />
+          <span className="ms-2">close</span>
+        </Button>
+        <Button
+          variant="success"
+          onClick={() => {
+            onChange(localText);
+          }}
+        >
+          <FontAwesomeIcon icon={faCheck} />
+          <span className="ms-2">confirm</span>
+        </Button>
+      </div>
+    </div>
   );
 }
